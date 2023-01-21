@@ -9,8 +9,6 @@ const { DB_URL } = process.env;
 const connectToDatabase = async (): Promise<void> => {
    const options: ConnectionOptions = {
       useNewUrlParser: true,
-      //useFindAndModify: false,
-      //useCreateIndex: true,
       useUnifiedTopology: true 
      };
   await mongoose.connect(`${DB_URL}`, options);

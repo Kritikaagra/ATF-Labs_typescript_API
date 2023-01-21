@@ -1,6 +1,6 @@
 import mongoose, { Schema, Model, Document } from "mongoose";
 
-type RoleDocument = Document & {
+type CompanyDocument = Document & {
   name: string;
   address: string;
   city: string;
@@ -17,30 +17,30 @@ type RoleDocument = Document & {
   bankAddress: string;
   ifsc: string;
   swiftCode: string;
-  isDelete: boolean;
+  isDeleted: boolean;
 };
 
-type RoleInput = {
-  name: RoleDocument['name'];
-  address: RoleDocument['address'];
-  city: RoleDocument['city'];
-  state: RoleDocument['state'];
-  pincode: RoleDocument['pincode'];
-  gst: RoleDocument['gst'];
-  lei: RoleDocument['lei'];
-  cin: RoleDocument['cin'];
-  lut: RoleDocument['lut'];
-  contact: RoleDocument['contact'];
-  accountNo: RoleDocument['accountNo'];
-  accountName: RoleDocument['accountName'];
-  bankName: RoleDocument['bankName'];
-  bankAddress: RoleDocument['bankAddress'];
-  ifsc: RoleDocument['ifsc'];
-  swiftCode: RoleDocument['swiftCode'];
-  isDelete: RoleDocument['isDelete'];
+type CompanyInput = {
+  name: CompanyDocument['name'];
+  address: CompanyDocument['address'];
+  city: CompanyDocument['city'];
+  state: CompanyDocument['state'];
+  pincode: CompanyDocument['pincode'];
+  gst: CompanyDocument['gst'];
+  lei: CompanyDocument['lei'];
+  cin: CompanyDocument['cin'];
+  lut: CompanyDocument['lut'];
+  contact: CompanyDocument['contact'];
+  accountNo: CompanyDocument['accountNo'];
+  accountName: CompanyDocument['accountName'];
+  bankName: CompanyDocument['bankName'];
+  bankAddress: CompanyDocument['bankAddress'];
+  ifsc: CompanyDocument['ifsc'];
+  swiftCode: CompanyDocument['swiftCode'];
+  isDeleted: CompanyDocument['isDeleted'];
 };
 
-const roleSchema = new Schema(
+const companySchema = new Schema(
   {
     name: {
       type: Schema.Types.String,
@@ -106,18 +106,18 @@ const roleSchema = new Schema(
         type: Schema.Types.String,
         required:true,
     },
-    isDelete: {
+    isDeleted: {
       type: Schema.Types.Boolean,
       required: false,
       default: false
     }
   },
   {
-    collection: 'users',
+    collection: 'companies',
     timestamps: true,
   },
 );
 
-const Role: Model<RoleDocument> = mongoose.model<RoleDocument>('User', roleSchema);
+const Company: Model<CompanyDocument> = mongoose.model<CompanyDocument>('Company', companySchema);
 
-export { Role, RoleInput, RoleDocument };
+export { Company, CompanyInput, CompanyDocument };

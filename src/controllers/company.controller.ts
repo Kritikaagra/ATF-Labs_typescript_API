@@ -1,9 +1,8 @@
-import { Request, Response } from 'express';
 import express from 'express';
-import { Role, RoleInput } from '../models/user.model';
+import { Company, CompanyInput } from '../models/company.model';
 
 //create
-const createUser = async (req: express.Request, res: express.Response) => {
+const createCompany = async (req: express.Request, res: express.Response) => {
   const {
     name,
     address,
@@ -21,7 +20,7 @@ const createUser = async (req: express.Request, res: express.Response) => {
     bankAddress,
     ifsc,
     swiftCode, 
-    isDelete,
+    isDeleted,
   } = req.body;
 
   if (
@@ -47,7 +46,7 @@ const createUser = async (req: express.Request, res: express.Response) => {
     });
   }
 
-  const roleInput: RoleInput = {
+  const companyInput: CompanyInput = {
     name,
     address,
     city,
@@ -64,31 +63,30 @@ const createUser = async (req: express.Request, res: express.Response) => {
     bankAddress,
     ifsc,
     swiftCode,
-    isDelete,
+    isDeleted,
   };
-  const roleCreated = Role.create(roleInput);
-  return res.status(201).json({ data: roleCreated, message: "Created Successfully" });
+  const companyCreated = Company.create(companyInput);
+  return res.status(201).json({message: "Company Created Successfully" });
 };
 
 //get all
-const getAllUsers = async (req: express.Request, res: express.Response) => {
-  const roles = await Role.find({isDelete: false}).exec();
-  return res.status(200).json({ data: roles })
+const getAllCompany = async (req: express.Request, res: express.Response) => {
+  const companies = await Company.find({isDeleted: false}).exec();
+  return res.status(200).json({ data: companies })
 };
 
 //get unique
-const getUser = async (req: express.Request, res: express.Response) => {
+const getCompany = async (req: express.Request, res: express.Response) => {
   const { id } = req.params;
-  const role = await Role.findOne({ _id: id });
-  if (!role || role.isDelete == true) {
-    return res.status(404).json({ message: `Role with id "${id}" not found.` });
+  const company = await Company.findOne({ _id: id });
+  if (!company || company.isDeleted == true) {
+    return res.status(404).json({ message: `Company with id "${id}" not found.` });
   }
-  console.log(role);
-  return res.status(200).json({ data: role });
+  return res.status(200).json({ data: company });
 };
 
 //update
-const updateUser = async (req: express.Request, res: express.Response) => {
+const updateCompany = async (req: express.Request, res: express.Response) => {
   const { id } = req.params;
 
   const {
@@ -108,13 +106,13 @@ const updateUser = async (req: express.Request, res: express.Response) => {
     bankAddress,
     ifsc,
     swiftCode,
-    isDelete
+    isDeleted
   } = req.body;
 
-  const role = await Role.findOne({ _id: id });
+  const company = await Company.findOne({ _id: id });
 
-  if (!role || role.isDelete == true) {
-    return res.status(404).json({ message: `Role with id "${id}" not found.` });
+  if (!company || company.isDeleted == true) {
+    return res.status(404).json({ message: `Company with id "${id}" not found.` });
   }
   if (
     !name ||
@@ -136,12 +134,12 @@ const updateUser = async (req: express.Request, res: express.Response) => {
   ) {
     return res.status(422).json({ message: 'The fields name and description are required' });
   }
-  await Role.updateOne(
+  await Company.updateOne(
     { _id: id },
     { name, address, city, state, pincode, gst, lei, cin, lut, contact, accountNo, accountName, bankName, bankAddress, ifsc, swiftCode },
   );
 
-  const roleUpdated = await Role.findById(id, {
+  const companyUpdated = await Company.findById(id, {
     name,
     address,
     city,
@@ -160,16 +158,15 @@ const updateUser = async (req: express.Request, res: express.Response) => {
     swiftCode,
   });
 
-  return res.status(200).json({ data: roleUpdated });
+  return res.status(200).json({ data: companyUpdated, message:"Company updated Successfully." });
 };
 
 //delete
-const deleteUser = async (req: express.Request, res: express.Response) => {
+const deleteCompany = async (req: express.Request, res: express.Response) => {
   const { id } = req.params;
-  const { isDelete } = req.body;
-  await Role.updateOne({ _id: id }, { isDelete: true });
-  //await Role.findByIdAndDelete(id);
-  return res.status(200).json({ message: 'Role deleted successfully.' });
+  const { isDeleted } = req.body;
+  await Company.updateOne({ _id: id }, { isDeleted: true });
+  return res.status(200).json({ message: 'Company deleted successfully.' });
 };
 
-export { createUser, getAllUsers, getUser, updateUser, deleteUser };
+export { createCompany, getAllCompany, getCompany, updateCompany, deleteCompany };

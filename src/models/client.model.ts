@@ -1,6 +1,6 @@
 import mongoose, { Schema, Model, Document } from "mongoose";
 
-type RoleDocument = Document & {
+type ClientDocument = Document & {
   name: string;
   address: string;
   city: string;
@@ -10,23 +10,23 @@ type RoleDocument = Document & {
   mainContactPerson: string;
   contact: number;
   email: string;
-  isDelete: boolean;
+  isDeleted: boolean;
 };
 
-type RoleInput = {
-  name: RoleDocument['name'];
-  address: RoleDocument['address'];
-  city: RoleDocument['city'];
-  state: RoleDocument['state'];
-  country: RoleDocument['country'];
-  gst: RoleDocument['gst'];
-  mainContactPerson: RoleDocument['mainContactPerson'];
-  contact: RoleDocument['contact'];
-  email: RoleDocument['email'];
-  isDelete: RoleDocument['isDelete'];
+type ClientInput = {
+  name: ClientDocument['name'];
+  address: ClientDocument['address'];
+  city: ClientDocument['city'];
+  state: ClientDocument['state'];
+  country: ClientDocument['country'];
+  gst: ClientDocument['gst'];
+  mainContactPerson: ClientDocument['mainContactPerson'];
+  contact: ClientDocument['contact'];
+  email: ClientDocument['email'];
+  isDeleted: ClientDocument['isDeleted'];
 };
 
-const roleSchema = new Schema(
+const clientSchema = new Schema(
   {
     name: {
       type: Schema.Types.String,
@@ -63,19 +63,22 @@ const roleSchema = new Schema(
     email: {
       type: Schema.Types.String,
       required: true,
+      // unique: true,
+      // lowercase: true,
+      // match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
     },
-    isDelete: {
+    isDeleted: {
       type: Schema.Types.Boolean,
       required: false,
       default: false
     }
   },
   {
-    collection: 'roles',
+    collection: 'clients',
     timestamps: true,
   },
 );
 
-const Role: Model<RoleDocument> = mongoose.model<RoleDocument>('Role', roleSchema);
+const Client: Model<ClientDocument> = mongoose.model<ClientDocument>('Client', clientSchema);
 
-export { Role, RoleInput, RoleDocument };
+export { Client, ClientInput, ClientDocument };
